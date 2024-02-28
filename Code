@@ -1,0 +1,35 @@
+## R Statistics 
+
+### Packages needed #### 
+
+library(trend)
+library(readxl)
+library("ggplot2")
+library(dplyr)
+library(grid)
+library(lubridate)
+
+### Data needs to be classed as numeric ###
+### use as.numeric() command to transform class ### 
+
+File$Variable<-as.numeric(File$Vairable)
+File$Date <- as.POSIXlt(File$Date) 
+File$Date <- as.numeric(year(File$Date))
+
+### Run Mann-Kendall and find the Sens Slope ###
+mk.test(DRO)
+sens.slope(DRO)
+
+### Create data frame to plot ###
+data <- as.data.frame(file) %>%
+  select('Date', 'Contaminate')
+
+
+### Plot Regession ###
+ggplot(data, aes(Date, Contamiant)) + 
+  geom_line()+ geom_point()
+  + geom_smooth(method = lm)
+  + xlab("year")+ ylab("Concentration (µg/L)")
+  + geom_hline(yintercept = 1500, linetype="dashed")  ### Contaminante clean up level line####
+  + ggtitle("Mann-Kendall Well Contaminate Concentration")  
+
