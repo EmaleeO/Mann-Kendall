@@ -1,0 +1,55 @@
+run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, value_col, 
+                                      location, chemical) {
+  # Load required libraries
+  library(readxl)
+  library(Kendall)
+  library(ggplot2)
+  library(dplyr)
+  
+  # Load the dataset from the specified file
+
+  data <- X2024_Historical_Sharpe_Final_FFA_Report
+  
+  # Convert the time column to Date format
+  data[[date_col]] <- as.Date(data[[date_col]], format = "%m/%d/%Y")
+  
+  # Check for "<" in the values and convert those values to half the number
+  matches <- grepl("<", data[[value_col]])
+  if (any(matches)) {
+    data[[value_col]][matches] <- as.numeric(sub("<", "", data[[value_col]][matches])) / 2
+  }
+  
+  data[[value_col]] <- as.numeric(data[[value_col]])
+  
+  # Filter the data based on location, chemical, and year range (2007-2025)
+  filtered_data <- data %>%
+    filter(!!sym(location_col) == location, 
+           !!sym(chemical_col) == chemical,
+           format(!!sym(date_col), "%Y") >= 2007, 
+           format(!!sym(date_col), "%Y") <= 2025)
+  
+  # Perform the Mann-Kendall test
+  mk_test <- MannKendall(filtered_data[[value_col]])
+  
+  # Extract the results
+  count <- length(filtered_data[[value_col]])  # Number of observations
+  p_value <- mk_test$sl                        # P-value
+  s_statistic <- mk_test$S                     # S-statistic
+  cov <- mk_test$tau                           # Kendall's Tau (COV)
+  
+  # Print the detailed results
+  cat("Mann-Kendall Test Results for", chemical, "at", location, "from 2007 to 2025:\n")
+  cat("Count (n):", count, "\n")
+  cat("S-statistic:", s_statistic, "\n")
+  cat("Kendall's Tau (COV):", cov, "\n")
+  cat("P-value:", p_value, "\n")
+  
+  # Create a time series plot with trend line
+  ggplot(filtered_data, aes_string(x = date_col, y = value_col)) +
+    geom_line(color = "blue") +                        # Line plot for data
+    geom_smooth(method = "lm", color = "red", se = FALSE) +  # Linear trend line
+    ggtitle(paste("Mann-Kendall Trend Analysis for", chemical, "at", location, "(2007-2025)")) +
+    xlab("date") +
+    ylab("Value") +
+    theme_minimal()
+}
