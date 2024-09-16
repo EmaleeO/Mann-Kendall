@@ -53,3 +53,7 @@ run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, valu
     ylab("Value") +
     theme_minimal()
 }
+
+
+
+run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", "EWNB1", "Carbon tetrachloride")
