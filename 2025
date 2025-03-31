@@ -1,0 +1,26 @@
+library(readxl)
+library(Kendall)
+library(ggplot2)
+library(dplyr)
+sharpe
+> run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, value_col, location, chemical){
+     sharpe[[data_col]] <- as.Date(sharpe[[date_col]], format = "%m/%d/%Y")
+     matches <- geprl("<", sharpe[[value_col]])
+     if (any(matches)) {
+         shapre[[value_col]][matches] <- as.numeric(sub("<", "", sharpe[[value_col]][matches]))/2
+      }
+     sharpe[[value_col]] <- as.numeric(sharpe[[value_col]])
+   
+      filter_data <- sharpe %>%
+           filter(!!sym(location_col) == location,
+                              !!sym(chemical_col) == chemical,
+                              format(!!sym(date_col), "%Y") >= 2007,
+                              format(!!sym(date_col), "%Y") <= 2025)
+       
+         Mk_test <- MannKendall(filter_data[[value_col]])
+         newtable <- Mannkendall (filter_data)[[value_col]] | summarise(across(length(filter_data[[value_col]]), mk_test$s1, mk_test$S, mk_test$tau))
+         print(newtable)}
+
+run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", (grep(sharpe$Location)), (grep(sharpe$Chemical)))
+mann_kendal <- lapply(sharpe$Location + sharpe$chemical, run_mann_kendall_analysis)          
+                                                                    
