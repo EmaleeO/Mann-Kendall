@@ -5,7 +5,7 @@ library(dplyr)
 sharpe
 > run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, value_col, location, chemical){
      sharpe[[data_col]] <- as.Date(sharpe[[date_col]], format = "%m/%d/%Y")
-     matches <- geprl("<", sharpe[[value_col]])
+     matches <- grepl("<", sharpe[[value_col]])
      if (any(matches)) {
          shapre[[value_col]][matches] <- as.numeric(sub("<", "", sharpe[[value_col]][matches]))/2
       }
