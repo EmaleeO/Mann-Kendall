@@ -16,11 +16,20 @@ sharpe
                               !!sym(chemical_col) == chemical,
                               format(!!sym(date_col), "%Y") >= 2007,
                               format(!!sym(date_col), "%Y") <= 2025)
-       
-         Mk_test <- MannKendall(filter_data[[value_col]])
-         newtable <- Mannkendall (filter_data)[[value_col]] | summarise(across(length(filter_data[[value_col]]), mk_test$s1, mk_test$S, mk_test$tau))
+     
+run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", (grep(sharpe$Location)), (grep(sharpe$Chemical)))
+mann_kendal <- lapply(sharpe$Location + sharpe$chemical, run_mann_kendall_analysis)          # this seems wrong sharpe$location and sharpe$chemical are telling the code which columns to run
+                                                                    
+#remove table /separate the function to debug
+  newtable <- Mannkendall (filter_data)[[value_col]] | summarise(across(length(filter_data[[value_col]]), mk_test$s1, mk_test$S, mk_test$tau))
          print(newtable)}
 
-run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", (grep(sharpe$Location)), (grep(sharpe$Chemical)))
-mann_kendal <- lapply(sharpe$Location + sharpe$chemical, run_mann_kendall_analysis)          
-                                                                    
+#Mk_test and lapply seem to do the same thing remove Mk_test
+
+#Mk_test removed, focus on how to pipe the columns into the function
+
+#Mk_test and lapply seem to do the same thing remove Mk_test, this is not correct. the Mk_test in the function was actually running the mann kendall the lapply was trying to apply the whole funtion to those columns 
+
+#(location_col, chemical_col, date_col, value_col, location, chemical) this syntax seems important try to recreate,b because unlike the lapply command line this is showing all the columns and then focuses on the "location" and "chemical" :
+
+run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", (grep(sharpe$Location)), (grep(sharpe$Chemical))) #it comes back to running the function 
