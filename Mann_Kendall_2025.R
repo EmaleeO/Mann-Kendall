@@ -22,3 +22,5 @@ summary(Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value))
 newtable <-  Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value %>% summarise(across(length(sharpe_2007_2025$Value)))) #chemical cant be x because x needs to be numeric
 
 cor(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value, method="kendall")
+
+#this is a test
