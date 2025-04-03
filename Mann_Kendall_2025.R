@@ -16,3 +16,9 @@ mk_test<- MannKendall(sharpe_2007_2025$Value) #this is not the right code. This 
 print(mk_test)
 newtable <-  MannKendall(sharpe_2007_2025$Value)%>% summarise(across(length(sharpe_2007_2025$Value), mk_test$s1, mk_test$S, mk_test$tau)) #same problem as above but trying to table the important information but still need to figure out how to run the mannkendall
 print(newtable)
+
+?MannKendall
+summary(Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value))
+newtable <-  Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value %>% summarise(across(length(sharpe_2007_2025$Value)))) #chemical cant be x because x needs to be numeric
+
+cor(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value, method="kendall")
