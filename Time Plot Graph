@@ -4,7 +4,7 @@
    library(ggplot2)
    library(dplyr)
    
-    data <- X2024_Historical_Sharpe_Final_FFA_Report
+
     
     if (!is.data.frame(data)) {
       stop("The 'data' argument must be a data frame.")
@@ -46,13 +46,6 @@
  
 }
 
- plot_analyte_timeseries_by_location(
-                  data = X2024_Historical_Sharpe_Final_FFA_Report,
-                  date_col = "Date",
-                  chemical_col = "Chemical",
-                  location_col = "Location",
-                 location = "PW003",
-                  analyte = "Carbon tetrachloride",
                   action_level = 0.5,  # Replace with your desired action level
                   value_col = "Value"
      )
