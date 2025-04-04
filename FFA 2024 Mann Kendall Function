@@ -8,7 +8,7 @@ run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, valu
   
   # Load the dataset from the specified file
 
-  data <- X2024_Historical_Sharpe_Final_FFA_Report
+
   
   # Convert the time column to Date format
   data[[date_col]] <- as.Date(data[[date_col]], format = "%m/%d/%Y")
@@ -56,4 +56,4 @@ run_mann_kendall_analysis <- function(location_col, chemical_col, date_col, valu
 
 
 
-run_mann_kendall_analysis("Location", "Chemical", "Date", "Value", "EWNB1", "Carbon tetrachloride")
+
