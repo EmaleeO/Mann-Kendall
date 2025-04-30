@@ -1,7 +1,7 @@
 library(tidyverse)
 library(readxl)
 library(Kendall)
-sharpe <- read_xlsx("2024 Historical_Sharpe_Final FFA Report.xlsx") #need to figure out how to load this with out changing the working directory. Maybe upload the sharpe tables to github
+sharpe <-  read_excel(path ="/Users/eousley/OneDrive - beringstraits.com/Desktop/2024 Historical_Sharpe_Final FFA Report.xlsx")#Fixed 
 print(sharpe)
 sharpe_2007_2025 <- filter(sharpe, Date >= as.Date("2007-01-01"), ) #filter for current data set
 print(sharpe_2007_2025)
@@ -22,5 +22,3 @@ summary(Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value))
 newtable <-  Kendall(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value %>% summarise(across(length(sharpe_2007_2025$Value)))) #chemical cant be x because x needs to be numeric
 
 cor(sharpe_2007_2025$Chemical, sharpe_2007_2025$Value, method="kendall")
-
-#this is a test
