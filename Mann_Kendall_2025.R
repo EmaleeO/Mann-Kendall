@@ -15,8 +15,34 @@ sharpe_2007_2025$Value <- as.numeric(sharpe_2007_2025$Value) #make sure all valu
 print(sharpe_2007_2025)
 Grouped <- sharpe_2007_2025 %>%
   group_by(Fil, Chemical) %>%
-  group_split() #grouping by well and chemical and split into separate data frames
+  group_split() %>% #grouping by well and chemical and split into separate data frames
 
+
+MK_Results <- purrr::map(Grouped, ~ {
+  df <- .x  # Current group
+  
+  # Skip groups with fewer than 4 rows
+  if (nrow(df) < 4) return(NULL)
+  
+  # Try-catch to handle any errors during MannKendall and return results
+  tryCatch({
+    mk <- MannKendall(df$Value)  # Perform Mann-Kendall test
+    tibble(
+      Fil = unique(df$Fil),
+      Chemical = unique(df$Chemical),
+      S = mk$S,
+      Tau = mk$tau,
+      P_Value = mk$sl
+    )
+  }, error = function(e) {
+    message("Error in group: ", unique(df$Fil), " - ", unique(df$Chemical), 
+            "\nMessage: ", conditionMessage(e))
+    NULL  # Return NULL on error
+  })
+}) %>% purrr::compact()  # Remove NULL results after the map
+
+# Print MK_Results to check
+print(MK_Results) #IT WORKS YAY!!! IGNORE EVERYTHING BELOW!! Need to combine them into one tible!!! And add sen slope!!!!!!!!!!!!
 Grouped <- sharpe_2007_2025 %>%
   group_by(Fil, Chemical) %>%
   group_split()
