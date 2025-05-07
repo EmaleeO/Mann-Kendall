@@ -12,9 +12,24 @@ if (any(nondetects)) {
 print(nondetects)
 print(sharpe_2007_2025$Value)
 sharpe_2007_2025$Value <- as.numeric(sharpe_2007_2025$Value) #make sure all values are represented as numeric
-mk_test<- MannKendall(sharpe_2007_2025$Value) #this is not the right code. This is trying to run a mannkendall for all the values in the data set regardless of the chemical
+print(sharpe_2007_2025)
+Grouped <- sharpe_2007_2025 %>%
+  group_by(Fil, Chemical) %>%
+  group_split() #grouping by well and chemical and split into separate data frames
+
+Grouped <- sharpe_2007_2025 %>%
+  group_by(Fil, Chemical) %>%
+  group_split()
+# grouping by well and chemical and split into separate data frames
+  #I need to run the Mann-Kendall on each tible but skip the tibles with less then 4 data points
+
+
+
+mk_test<- MannKendall(sharpe_2007_2025
+                      $Value) #this is not the right code. This is trying to run a mannkendall for all the values in the data set regardless of the chemical
 print(mk_test)
-newtable <-  MannKendall(sharpe_2007_2025$Value)%>% summarise(across(length(sharpe_2007_2025$Value), mk_test$s1, mk_test$S, mk_test$tau)) #same problem as above but trying to table the important information but still need to figure out how to run the mannkendall
+newtable <-  MannKendall(Grouped$Value)%>% summarise(across(length(Grouped$Value), mk_test$s1, mk_test$S, mk_test$tau)) #same problem as above but trying to table the important information but still need to figure out how to run the mannkendall
+#need to make sure that Sen Slope is calculated
 print(newtable)
 
 ?MannKendall
