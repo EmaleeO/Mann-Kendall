@@ -1,6 +1,7 @@
 library(tidyverse)
 library(readxl)
 library(Kendall)
+library(openxlsx)
 sharpe <-  read_excel(path ="/Users/eousley/OneDrive - beringstraits.com/Desktop/2024 Historical_Sharpe_Final FFA Report.xlsx")#Fixed 
 print(sharpe)
 sharpe_2007_2025 <- filter(sharpe, Date >= as.Date("2007-01-01"), ) #filter for current data set
@@ -42,7 +43,13 @@ MK_Results <- purrr::map(Grouped, ~ {
 }) %>% purrr::compact()  # Remove NULL results after the map
 
 # Print MK_Results to check
-print(MK_Results) #IT WORKS YAY!!! IGNORE EVERYTHING BELOW!! Need to combine them into one tible!!! And add sen slope!!!!!!!!!!!!
+print(MK_Results) #IT WORKS YAY!!! Need to combine them into one tible!!! And add sen slope!!!!!!!!!!!!
+mk_combined <- bind_rows(MK_Results) #binds the result rows together
+
+
+
+
+
 Grouped <- sharpe_2007_2025 %>%
   group_by(Fil, Chemical) %>%
   group_split()
