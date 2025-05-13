@@ -77,7 +77,8 @@ sharpeexccedances %>%
   geom_qq() +
   geom_qq_line() +
   facet_wrap(~ Group) +
-  labs(x= "Group", y= "Arsenic Concentration")
+  labs(x= "Group", y= "Arsenic Concentration") +
+  ggtitle("Cleaned Data with Separate Group")
 
 sharpeexccedances %>%
   filter(!is.na(Arsenic), !is.na(Group)) %>%
@@ -87,3 +88,8 @@ sharpeexccedances %>%
   labs(x= "Group", y= "Arsenic Concentration") +
   ggtitle("Cleaned Data with Groups Combined")
 
+wtexceedances <- wilcox.test(Arsenic ~ Group, data = sharpeexccedances)
+print(wtexceedances)
+
+ttestexccedances<- t.test(Arsenic ~ Group, data = sharpeexccedances)
+print(ttestexccedances)
