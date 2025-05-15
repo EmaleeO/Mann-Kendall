@@ -31,7 +31,7 @@ plot_analyte_timeseries_by_location <- function(data, date_col, chemical_col, lo
     geom_hline(yintercept = action_level, color = "orange", linetype = "dashed") +  # Horizontal line for action level
     scale_shape_manual(name = "Detection Type", values = c("Detect" = 16, "Non-detect" = 8)) +  # Custom shapes for points
     scale_fill_manual(values = c("Detect" = "blue", "Non-detect" = "orange")) +  # Custom fill colors for points
-    ggtitle(paste("Carbon Tetrachloride", "at", location)) +
+    ggtitle(paste( "Carbon Tetratchloride", "at", location)) +
     xlab("Date") +
     ylab("Value") +
     theme_minimal() +
@@ -51,9 +51,9 @@ plot_analyte_timeseries_by_location(
   date_col = "Date",
   chemical_col = "Chemical",
   location_col = "Fil",
-  location = "EWB4",
-  analyte = "Carbon tetrachloride",
-  action_level = 5,
+  location = "EWA11",
+  analyte = "1,1‐Dichloroethene",
+  action_level = 1,
   value_col = "Value"
 )
 
