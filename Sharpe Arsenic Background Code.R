@@ -98,3 +98,49 @@ print(wtexceedances)
 
 ttestexccedances<- t.test(Arsenic ~ Group, data = sharpeexccedances)
 print(ttestexccedances)
+
+
+###post meeting Code###
+
+#run the difference with one population outliers
+sharpeexccedances<- read_excel("/Users/eousley/OneDrive - beringstraits.com/Documents/Sharpe Arsenic Background/ProUCL_data_SHAD_20250417014930_OutlierRemoved_separategroups.xlsx")
+sharpeexccedances$Group <- ifelse(startsWith(sharpeexccedances$`Location ID`, "DP"), "SB",
+                                  ifelse(startsWith(sharpeexccedances$`Location ID`, "SB"), "SB",
+                                         ifelse(startsWith(sharpeexccedances$`Location ID`, "SHAD"), "SHAD", NA)))
+ttestexccedances<- t.test(Arsenic ~ Group, data = sharpeexccedances)
+wtexceedances <- wilcox.test(Arsenic ~ Group, data = sharpeexccedances)
+print(wtexceedances)
+
+sharpeexccedances %>%
+  filter(!is.na(Arsenic), !is.na(Group)) %>%
+  ggplot(aes(sample = Arsenic)) +
+  geom_qq() +
+  geom_qq_line() +
+  labs(x= "Group", y= "Arsenic Concentration") +
+  ggtitle("Cleaned Data with Groups Combined")
+
+ggplot(sharpeexccedances, aes(y=Arsenic)) + geom_boxplot()
+
+##looking at 0-10 as one group and if different than greater than 10
+
+sharpeexccedances<- read_excel("/Users/eousley/OneDrive - beringstraits.com/Documents/Sharpe Arsenic Background/ProUCL_data_SHAD_20250417014930_OutlierRemoved_separategroups_0to10.xlsx")
+names(sharpeexccedances)[names(sharpeexccedances) == "Sample Depth"] <- "SampleDepth" #fix sample depth catergory name
+sharpeexccedances$SampleDepth <- as.factor(sharpeexccedances$SampleDepth)
+wtexceedances <- wilcox.test(Arsenic ~ SampleDepth, data = sharpeexccedances)
+print(wtexceedances)
+print(sharpe)
+
+sharpeexccedances$Group <- ifelse(startsWith(sharpeexccedances$`Location ID`, "DP"), "SB",
+                                  ifelse(startsWith(sharpeexccedances$`Location ID`, "SB"), "SB",
+                                         ifelse(startsWith(sharpeexccedances$`Location ID`, "SHAD"), "SHAD", NA)))
+sharpeexccedances$Arsenic <- as.numeric(sharpeexccedances$Arsenic)
+
+sharpegroup <- sharpeexccedances %>%
+  group_split(Group) %>%
+  wilcox.test(Arsenic ~ SampleDepth)
+  
+wtgroup <- wilcox.test(Arsenic ~ SampleDepth, data = sharpegroup)
+print(wtgroup)
+summary(wtgroup)
+
+sharpegroup
